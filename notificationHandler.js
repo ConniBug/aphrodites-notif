@@ -20,7 +20,7 @@ require('fs').readdirSync(path.join(__dirname, 'notifs')).forEach(function (file
 });
 log.log(`Loaded ${count} notification services.`)
 
-module.exports.send = async (newDat, title, body, url) => {
+module.exports.sendNotif = async (newDat, title, body, url) => {
     notifs.forEach(notifService => {
         notifService.run(newDat, title, body, url)
     });
