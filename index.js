@@ -67,25 +67,24 @@ function foundItem(oldDat, newDat) {
         `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`);
 }
 
+var terminated = false;
+
 const fs = require('fs');
-
-var timeBetweenStockChecks = 2; // seconds
+var timeBetweenStockChecks = 7.5; // seconds
 setInterval(async function(){
-
-    //try {
+    try {
         var cachedProducts = [];
 
         // Get cached products
-        if(fs.existsSync("./pageData/dat.json")) {
+        if (fs.existsSync("./pageData/dat.json")) {
             // Old dat exists
             cachedProducts = await fs.readFileSync("./pageData/dat.json");
             cachedProducts = JSON.parse(cachedProducts);
         } else {
             // Populate cache
             cachedProducts = await getAllRemoteProducts();
-            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await cachedProducts, null, 4));
+            if(!terminated) fs.writeFileSync("./pageData/dat.json", JSON.stringify(await cachedProducts, null, 4));
         }
-
 
         // Get current up to date products
         var newProducts = await getAllRemoteProducts();
@@ -93,11 +92,19 @@ setInterval(async function(){
         // Match new products with old
         newProducts.forEach(newProduct => {
             cachedProducts.forEach(oldProduct => {
-                if(newProduct.pid == oldProduct.pid) {
+                if (newProduct.pid == oldProduct.pid) {
                     foundItem(oldProduct, newProduct);
                 }
             });
         });
 
         fs.writeFileSync("./pageData/dat.json", JSON.stringify(await newProducts, null, 4));
+    } catch (error) {
+        log.error(error);
+    }
 }, timeBetweenStockChecks * 1000);
+
+process.on('SIGTERM', () => {
+    terminated = true;
+    console.info('SIGTERM signal received.');
+})
