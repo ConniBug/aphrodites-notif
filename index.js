@@ -10,6 +10,7 @@ const { capitalCase } = require("change-case");
 const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
 const log = require('@connibug/js-logging');
+const fs = require('fs');
 
 // Amount of pages the site has
 pageCount = 2;
@@ -69,8 +70,6 @@ function foundItem(oldDat, newDat) {
 }
 
 var terminated = false;
-
-const fs = require('fs');
 var timeBetweenStockChecks = 7.5; // seconds
 setInterval(async function(){
     try {
