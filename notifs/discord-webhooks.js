@@ -1,5 +1,5 @@
 const { Webhook, MessageBuilder  } = require('discord-webhook-node');
-const hook = new Webhook(process.env.DISCORD_WEBHOOK);
+const hook = new Webhook(require("../config.json").DiscordWebhook);
 
 /// <param name="productData">Simply all the new data about the product that updated</param>
 /// <param name="title">A title describing the detected changed</param>

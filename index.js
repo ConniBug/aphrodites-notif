@@ -1,7 +1,5 @@
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
-// Setup .env vars
-require('dotenv').config();
 
 // Import external code.
 const HasChanged = require("./Utils").HasChanged;
@@ -109,6 +107,8 @@ setInterval(async function(){
 process.on('SIGTERM', () => {
     terminated = true;
     console.info('SIGTERM signal received.');
-})
+    notificationService.sendMsg("Server Stopped!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
+});
 
-notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${process.env.computername}`);
+const os = require('os');
+notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
