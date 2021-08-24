@@ -77,7 +77,6 @@ function foundItem(oldDat, newDat) {
         `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`);
 }
 
-var terminated = false;
 var timeBetweenStockChecks = 7.5; // seconds
 setInterval(async function(){
     log.log("Checking");
@@ -91,7 +90,7 @@ setInterval(async function(){
         } else {
             // Populate cache
             cachedProducts = await getAllRemoteProducts();
-            if(!terminated) fs.writeFileSync("./pageData/dat.json", JSON.stringify(await cachedProducts, null, 4));
+            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await cachedProducts, null, 4));
         }
 
         // Get current up to date products
@@ -116,7 +115,6 @@ setInterval(async function(){
 }, timeBetweenStockChecks * 1000);
 
 process.on('SIGTERM', () => {
-    terminated = true;
     console.info('SIGTERM signal received.');
     notificationService.sendMsg("Server Stopped!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
 });
