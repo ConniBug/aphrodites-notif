@@ -28,5 +28,4 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm test
-    - run: node restartServer.js "${{ secrets.SERVER_URL }}"
     
