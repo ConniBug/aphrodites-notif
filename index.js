@@ -97,7 +97,7 @@ function foundItem(oldDat, newDat) {
 var terminated = false;
 var timeBetweenStockChecks = 7.5; // seconds
 setInterval(async function(){
-    try {
+    log.log("Checking");
         var cachedProducts = [];
 
         // Get cached products
@@ -123,10 +123,11 @@ setInterval(async function(){
             });
         });
 
-        fs.writeFileSync("./pageData/dat.json", JSON.stringify(await newProducts, null, 4));
-    } catch (error) {
-        log.error(error);
-    }
+        try {
+            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await newProducts, null, 4));
+        } catch (error) {
+            log.error(error);
+        }
 }, timeBetweenStockChecks * 1000);
 
 process.on('SIGTERM', () => {
