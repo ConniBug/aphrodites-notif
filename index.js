@@ -1,5 +1,6 @@
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
+const os = require('os');
 // require the library, main export is a function
 
 // Import external code.
@@ -15,6 +16,11 @@ const fs = require('fs');
 
 handleCD();
 
+const { exec } = require("child_process");
+var mostRecentUpdateReson = "";
+exec("git log -1 --pretty=%B", (error, stdout, stderr) => {
+    mostRecentUpdateReson =  stdout;
+});
 // Amount of pages the site has
 pageCount = 2;
 
@@ -115,5 +121,8 @@ process.on('SIGTERM', () => {
     notificationService.sendMsg("Server Stopped!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
 });
 
-const os = require('os');
-notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
+function sayHi() {
+    notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()} \n Last Update Reason: ${mostRecentUpdateReson}`);
+}
+
+setTimeout(sayHi, 2000);
