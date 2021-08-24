@@ -1,5 +1,6 @@
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
+// require the library, main export is a function
 
 // Import external code.
 const HasChanged = require("./Utils").HasChanged;
@@ -112,3 +113,16 @@ process.on('SIGTERM', () => {
 
 const os = require('os');
 notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
+
+// Simple Cont Delivery
+
+var http = require('http');
+http.createServer(function (req, res) {
+    if(req.socket.parser.incoming.url == "/restart") {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end("Doing");
+        process.exit(0);
+    }
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end("Ok");
+  }).listen(9615);
