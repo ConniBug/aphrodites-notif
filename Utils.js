@@ -1,4 +1,6 @@
 const log = require('@connibug/js-logging');
+var packageInfo = require("./package.json");
+var serverVersion = packageInfo.version;
 
 module.exports.HasChanged = (oldDat, newDat) => {
     if(oldDat.ref != newDat.ref) {
