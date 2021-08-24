@@ -151,7 +151,8 @@ http.createServer(function (req, res) {
                 console.log(`stderr: ${stderr}`);
                 process.exit(1);
             }
-            if(stdout.includes("Already up to date.")) {
+            let re = new RegExp('Already.up.to.date');
+            if(stdout.match(re)) {
                 console.log("Up to date dw");
                 process.exit(1);
             }
