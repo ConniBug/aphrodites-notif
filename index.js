@@ -159,16 +159,14 @@ http.createServer(function (req, res) {
             }
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
-                process.exit(1);
             }
             let re = new RegExp('Already.up.to.date');
             if(stdout.match(re)) {
                 console.log("Up to date dw");
-                process.exit(1);
+                return;
             }
             else {
                 console.log(`stdout: ${stdout}`);
-                process.exit(1);
             }
             process.exit(1);
         });
