@@ -2,20 +2,23 @@ const { exec } = require("child_process");
 
 exec("git pull", (error, stdout, stderr) => {
     if (error) {
+        let re = new RegExp('Please.commit.your.changes');
+        if(error.message.match(re)) {
+            exec("git stash", (error, stdout, stderr) => {
+                process.exit(1);
+            });
+        }
         console.log(`error: ${error.message}`);
         return;
     }
-    if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        process.exit(1);
-    }
-    if(stdout.includes("Already up to date.")) {
+    let re = new RegExp('Already.up.to.date');
+    if(stdout.match(re)) {
         console.log("Up to date dw");
     }
     else {
         console.log(`stdout: ${stdout}`);
-        process.exit(1);
     }
+    process.exit(1);
 });
 
 
@@ -143,8 +146,13 @@ http.createServer(function (req, res) {
         res.end("Doing");
         exec("git pull", (error, stdout, stderr) => {
             if (error) {
+                let re = new RegExp('Please.commit.your.changes');
+                if(error.message.match(re)) {
+                    exec("git stash", (error, stdout, stderr) => {
+                        process.exit(1);
+                    });
+                }
                 console.log(`error: ${error.message}`);
-                process.exit(1);
                 return;
             }
             if (stderr) {
