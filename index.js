@@ -1,3 +1,24 @@
+const { exec } = require("child_process");
+
+exec("git pull", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        process.exit(1);
+    }
+    if(stdout.includes("Already up to date.")) {
+        console.log("Up to date dw");
+    }
+    else {
+        console.log(`stdout: ${stdout}`);
+        process.exit(1);
+    }
+});
+
+
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
 // require the library, main export is a function
@@ -120,8 +141,9 @@ http.createServer(function (req, res) {
     if(req.socket.parser.incoming.url == "/restart") {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end("Doing");
-        process.exit(0);
+        process.exit(1);
+    } else {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end("Ok");
     }
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end("Ok");
   }).listen(9600);
