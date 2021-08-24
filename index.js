@@ -14,6 +14,7 @@ exec("git pull", (error, stdout, stderr) => {
     let re = new RegExp('Already.up.to.date');
     if(stdout.match(re)) {
         console.log("Up to date dw");
+        return;
     }
     else {
         console.log(`stdout: ${stdout}`);
