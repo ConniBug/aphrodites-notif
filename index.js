@@ -141,7 +141,26 @@ http.createServer(function (req, res) {
     if(req.socket.parser.incoming.url == "/restart") {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end("Doing");
-        process.exit(1);
+        exec("git pull", (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                process.exit(1);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                process.exit(1);
+            }
+            if(stdout.includes("Already up to date.")) {
+                console.log("Up to date dw");
+                process.exit(1);
+            }
+            else {
+                console.log(`stdout: ${stdout}`);
+                process.exit(1);
+            }
+            process.exit(1);
+        });
     } else {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end("Ok");
