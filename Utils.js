@@ -29,8 +29,7 @@ const { exec } = require("child_process");
 let needStashREGEX = new RegExp('Please.commit.your.changes');
 let alreadUpToDateREGEX = new RegExp('Already.up.to.date');
 
-module.exports.handleCD = (shouldRestart = false) => {
-    console.log("CD");
+module.exports.handleCD = () => {
     exec("git pull", (error, stdout, stderr) => {
         if (error) {
             if(error.message.match(needStashREGEX)) {
