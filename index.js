@@ -1,3 +1,5 @@
+var packageInfo = require("./package.json");
+var serverVersion = packageInfo.version;
 // Setup .env vars
 require('dotenv').config();
 
@@ -108,3 +110,5 @@ process.on('SIGTERM', () => {
     terminated = true;
     console.info('SIGTERM signal received.');
 })
+
+notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${process.env.computername}`);

@@ -25,3 +25,11 @@ module.exports.sendNotif = async (newDat, title, body, url) => {
         notifService.run(newDat, title, body, url)
     });
 };
+
+module.exports.sendMsg = async (title, body) => {
+    notifs.forEach(notifService => {
+        if(notifService.smallRun) {
+            notifService.smallRun(title, body)
+        }
+    });
+};
