@@ -47,7 +47,6 @@ module.exports.handleCD = () => {
             log.error(`stderr: ${stderr}`);
         }
         if(stdout.match(alreadUpToDateREGEX)) {
-            log.log("Up to date!");
             return;
         }
         else {
