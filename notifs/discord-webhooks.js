@@ -4,7 +4,6 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK);
 /// <param name="productData">Simply all the new data about the product that updated</param>
 /// <param name="title">A title describing the detected changed</param>
 /// <param name="productData">Simply all the new data about the product that updated</param>
-
 module.exports.run = async (productData, title, body, url) => {
     const IMAGE_URL = `https://www.aphrodites.shop/img/favicon.png`;
     hook.setUsername(title);
