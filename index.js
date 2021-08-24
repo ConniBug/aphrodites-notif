@@ -114,11 +114,6 @@ setInterval(async function(){
         handleCD();
 }, timeBetweenStockChecks * 1000);
 
-process.on('SIGTERM', () => {
-    console.info('SIGTERM signal received.');
-    notificationService.sendMsg("Server Stopped!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
-});
-
 function sayHi() {
     notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()} \n Last Update Reason: ${mostRecentUpdateReson}`);
 }
