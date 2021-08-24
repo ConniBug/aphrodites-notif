@@ -1,34 +1,10 @@
-const { exec } = require("child_process");
-
-exec("git pull", (error, stdout, stderr) => {
-    if (error) {
-        let re = new RegExp('Please.commit.your.changes');
-        if(error.message.match(re)) {
-            exec("git stash", (error, stdout, stderr) => {
-                process.exit(1);
-            });
-        }
-        console.log(`error: ${error.message}`);
-        return;
-    }
-    let re = new RegExp('Already.up.to.date');
-    if(stdout.match(re)) {
-        console.log("Up to date dw");
-        return;
-    }
-    else {
-        console.log(`stdout: ${stdout}`);
-    }
-    process.exit(1);
-});
-
-
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
 // require the library, main export is a function
 
 // Import external code.
 const HasChanged = require("./Utils").HasChanged;
+const handleCD = require("./Utils").handleCD;
 
 const notificationService = require("./notificationHandler");
 const { capitalCase } = require("change-case");
@@ -37,9 +13,10 @@ const fetch = require('node-fetch');
 const log = require('@connibug/js-logging');
 const fs = require('fs');
 
+handleCD();
+
 // Amount of pages the site has
 pageCount = 2;
-
 
 async function getProductsFromPage(pageNum)
 {
@@ -128,6 +105,8 @@ setInterval(async function(){
         } catch (error) {
             log.error(error);
         }
+
+        handleCD();
 }, timeBetweenStockChecks * 1000);
 
 process.on('SIGTERM', () => {
@@ -138,40 +117,3 @@ process.on('SIGTERM', () => {
 
 const os = require('os');
 notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()}`);
-
-// Simple Cont Delivery
-
-var http = require('http');
-http.createServer(function (req, res) {
-    if(req.socket.parser.incoming.url == "/restart") {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end("Doing");
-        exec("git pull", (error, stdout, stderr) => {
-            if (error) {
-                let re = new RegExp('Please.commit.your.changes');
-                if(error.message.match(re)) {
-                    exec("git stash", (error, stdout, stderr) => {
-                        process.exit(1);
-                    });
-                }
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-            }
-            let re = new RegExp('Already.up.to.date');
-            if(stdout.match(re)) {
-                console.log("Up to date dw");
-                return;
-            }
-            else {
-                console.log(`stdout: ${stdout}`);
-            }
-            process.exit(1);
-        });
-    } else {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end("Ok");
-    }
-  }).listen(9600);
