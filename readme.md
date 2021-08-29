@@ -1,5 +1,7 @@
 # Aphrodite's Stock Notifier
 
+[ss](/assets/ss.jpeg)
+
 # # Setup
 Fill in the config.json with your discord webhook url
 then run 
