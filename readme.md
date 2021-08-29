@@ -10,9 +10,9 @@ then
 To run this on a server you will want to use something like pm2 to restart it if it crashes
 
 
+# Custom notif servers
 
 If you wish to add any custom notifiers services just add a <name>.js to ./notifs with this simple template
-
 
 ```js
 module.exports.run = async (allDat, title, body, url) => {
