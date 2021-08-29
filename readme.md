@@ -1,6 +1,6 @@
 # Aphrodite's Stock Notifier
 
-[ss](https://raw.githubusercontent.com/ConniBug/aphrodites-notif/main/assets/ss.jpg)
+![ss](https://raw.githubusercontent.com/ConniBug/aphrodites-notif/main/assets/ss.jpg)
 
 # # Setup
 Fill in the config.json with your discord webhook url
