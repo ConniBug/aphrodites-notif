@@ -1,5 +1,9 @@
 # Aphrodite's Stock Notifier
 
+## Reqs
+
+## Packages used
+
 ![ss](https://raw.githubusercontent.com/ConniBug/aphrodites-notif/main/assets/ss.jpg)
 
 # # Setup
