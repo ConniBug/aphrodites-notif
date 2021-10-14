@@ -4,7 +4,6 @@
 
 ## Dont want to set it up..?
 
-![ScreenShot](https://raw.githubusercontent.com/ConniBug/aphrodites-notif/main/assets/discordss.jpg)
 Join my discord and look in #aphrodites-store
 https://discord.gg/Hd3VX6Njv5
 
