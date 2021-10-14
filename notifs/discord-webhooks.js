@@ -8,7 +8,6 @@ module.exports.run = async (productData, title, body, url) => {
     const IMAGE_URL = `https://www.aphrodites.shop/img/favicon.png`;
     hook.setUsername(title);
     hook.setAvatar(IMAGE_URL);
-    //299709641271672832
     
     const embed = new MessageBuilder()
         .setTitle(title)
@@ -26,7 +25,6 @@ module.exports.smallRun = async (title, body) => {
     const IMAGE_URL = `https://www.aphrodites.shop/img/favicon.png`;
     hook.setUsername(title);
     hook.setAvatar(IMAGE_URL);
-    299709641271672832
     
     const embed = new MessageBuilder()
         .setTitle(title)
