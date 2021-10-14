@@ -79,10 +79,10 @@ function foundItem(oldDat, newDat) {
 
 var timeBetweenStockChecks = 7.5; // seconds
 setInterval(async function(){
-    log.log("Checking");
         var cachedProducts = [];
 
         // Get cached products
+        // Def should just cache this locally and open restore it on startup /shrug
         if (fs.existsSync("./pageData/dat.json")) {
             // Old dat exists
             cachedProducts = await fs.readFileSync("./pageData/dat.json");
