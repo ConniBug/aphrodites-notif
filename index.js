@@ -96,17 +96,22 @@ setInterval(async function(){
         // Get current up to date products
         var newProducts = await getAllRemoteProducts();
 
-        // Match new products with old
-        newProducts.forEach(newProduct => {
-            cachedProducts.forEach(oldProduct => {
-                if (newProduct.pid == oldProduct.pid) {
-                    foundItem(oldProduct, newProduct);
-                }
-            });
-        });
-
         try {
-            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await newProducts, null, 4));
+            // Match new products with old
+            newProducts.forEach(newProduct => {
+                cachedProducts.forEach(oldProduct => {
+                    if (newProduct.pid == oldProduct.pid) {
+                        foundItem(oldProduct, newProduct);
+                    }
+                });
+            });
+        } catch(error) {
+            print("cachedProducts:", cachedProducts)
+            print(error)
+        }
+        
+        try {
+            fs.writeFileSync("./dat.json", JSON.stringify(await newProducts, null, 4));
         } catch (error) {
             log.error(error);
         }
