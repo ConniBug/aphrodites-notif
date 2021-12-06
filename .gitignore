@@ -75,6 +75,6 @@ typings/
 # FuseBox cache
 .fusebox/
 config.json
-./dat.json
+
 pageData/dat.json
 dat.json
