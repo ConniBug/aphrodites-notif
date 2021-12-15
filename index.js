@@ -1,6 +1,6 @@
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
-const os = require('os');
+const os = require("os");
 // require the library, main export is a function
 
 // Import external code.
@@ -8,18 +8,19 @@ const HasChanged = require("./Utils").HasChanged;
 const handleCD = require("./Utils").handleCD;
 
 const notificationService = require("./notificationHandler");
-const {capitalCase} = require("change-case");
-const {URLSearchParams} = require('url');
-const fetch = require('node-fetch');
-const log = require('@connibug/js-logging');
-const fs = require('fs');
+const { capitalCase } = require("change-case");
+const { URLSearchParams } = require("url");
+const fetch = require("node-fetch");
+const log = require("@connibug/js-logging");
+const fs = require("fs");
 
 handleCD();
 
-const {exec} = require("child_process");
+const { exec } = require("child_process");
 var mostRecentUpdateReson = "";
-exec("git log -1 --pretty=%B",
-     (error, stdout, stderr) => { mostRecentUpdateReson = stdout; });
+exec("git log -1 --pretty=%B", (error, stdout, stderr) => {
+  mostRecentUpdateReson = stdout;
+});
 // Amount of pages the site has
 pageCount = 2;
 
@@ -28,23 +29,24 @@ async function getProductsFromPage(pageNum) {
   params.append("request", "shop");
   params.append("page", pageNum);
 
-  var page = await fetch('https://www.aphrodites.shop/admin/php/ajax.php',
-                         {method : 'POST', body : params});
+  var page = await fetch("https://www.aphrodites.shop/admin/php/ajax.php", {
+    method: "POST",
+    body: params,
+  });
   page = await page.json();
   page = page.products;
   return page;
 }
 
 function doesExist(array, pidToCheckFor) {
-  array.forEach(e => {
-    if (e.pid == pidToCheckFor)
-      return true;
+  array.forEach((e) => {
+    if (e.pid == pidToCheckFor) return true;
   });
   return false;
 }
 
 function mergeAvoidDupes(main, second) {
-  second.forEach(e => {
+  second.forEach((e) => {
     if (!doesExist(main, e.pid)) {
       main.push(e);
     }
@@ -63,28 +65,36 @@ async function getAllRemoteProducts() {
 
 function foundItem(oldDat, newDat) {
   var changed = HasChanged(oldDat, newDat);
-  if (!changed)
-    return;
+  if (!changed) return;
 
   log.log(
-      "=====================================================================================");
+    "====================================================================================="
+  );
   log.log(`Aphrodites Store - ${capitalCase(changed)} Update`);
-  log.log(`${oldDat.name}'s ${capitalCase(changed)} has updated from ${
-      oldDat[changed]} to ${newDat[changed]}`);
   log.log(
-      `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`);
+    `${oldDat.name}'s ${capitalCase(changed)} has updated from ${
+      oldDat[changed]
+    } to ${newDat[changed]}`
+  );
   log.log(
-      "=====================================================================================");
+    `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`
+  );
+  log.log(
+    "====================================================================================="
+  );
 
   notificationService.sendNotif(
-      newDat, `Aphrodites Store - ${capitalCase(changed)} Update`,
-      `${oldDat.name}'s ${capitalCase(changed)} has updated from ${
-          oldDat[changed]} to ${newDat[changed]}`,
-      `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`);
+    newDat,
+    `Aphrodites Store - ${capitalCase(changed)} Update`,
+    `${oldDat.name}'s ${capitalCase(changed)} has updated from ${
+      oldDat[changed]
+    } to ${newDat[changed]}`,
+    `https://www.aphrodites.shop/product/${newDat.ref}/${newDat.nameurl}`
+  );
 }
 
 var timeBetweenStockChecks = 7.5; // seconds
-setInterval(async function() {
+setInterval(async function () {
   var cachedProducts = [];
 
   // Get cached products
@@ -96,8 +106,10 @@ setInterval(async function() {
   } else {
     // Populate cache
     cachedProducts = await getAllRemoteProducts();
-    fs.writeFileSync("./dat.json",
-                     JSON.stringify(await cachedProducts, null, 4));
+    fs.writeFileSync(
+      "./dat.json",
+      JSON.stringify(await cachedProducts, null, 4)
+    );
   }
 
   // Get current up to date products
@@ -105,16 +117,16 @@ setInterval(async function() {
 
   try {
     // Match new products with old
-    newProducts.forEach(newProduct => {
-      cachedProducts.forEach(oldProduct => {
+    newProducts.forEach((newProduct) => {
+      cachedProducts.forEach((oldProduct) => {
         if (newProduct.pid == oldProduct.pid) {
           foundItem(oldProduct, newProduct);
         }
       });
     });
   } catch (error) {
-    print("cachedProducts:", cachedProducts)
-    print(error)
+    print("cachedProducts:", cachedProducts);
+    print(error);
   }
 
   try {
@@ -128,10 +140,12 @@ setInterval(async function() {
 
 function sayHi() {
   notificationService.sendMsg(
-      "Server Started!",
-      "Version: " + serverVersion + "\n" +
-          `Hostname: ${os.hostname()} \n Last Update Reason: ${
-              mostRecentUpdateReson}`);
+    "Server Started!",
+    "Version: " +
+      serverVersion +
+      "\n" +
+      `Hostname: ${os.hostname()} \n Last Update Reason: ${mostRecentUpdateReson}`
+  );
 }
 
 setTimeout(sayHi, 2000);
