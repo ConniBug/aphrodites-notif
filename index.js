@@ -1,3 +1,5 @@
+const log = require('@connibug/js-logging');
+
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
 const os = require('os');
@@ -8,10 +10,10 @@ const HasChanged = require("./Utils").HasChanged;
 const handleCD = require("./Utils").handleCD;
 
 const notificationService = require("./notificationHandler");
+notificationService.setup(log);
 const { capitalCase } = require("change-case");
 const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
-const log = require('@connibug/js-logging');
 const fs = require('fs');
 
 handleCD();
@@ -117,5 +119,4 @@ setInterval(async function(){
 function sayHi() {
     notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()} \n Last Update Reason: ${mostRecentUpdateReson}`);
 }
-
 setTimeout(sayHi, 2000);
