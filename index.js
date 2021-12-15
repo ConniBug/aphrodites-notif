@@ -85,30 +85,35 @@ setInterval(async function(){
 
         // Get cached products
         // Def should just cache this locally and open restore it on startup /shrug
-        if (fs.existsSync("./pageData/dat.json")) {
+        if (fs.existsSync("./dat.json")) {
             // Old dat exists
-            cachedProducts = await fs.readFileSync("./pageData/dat.json");
+            cachedProducts = await fs.readFileSync("./dat.json");
             cachedProducts = JSON.parse(cachedProducts);
         } else {
             // Populate cache
             cachedProducts = await getAllRemoteProducts();
-            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await cachedProducts, null, 4));
+            fs.writeFileSync("./dat.json", JSON.stringify(await cachedProducts, null, 4));
         }
 
         // Get current up to date products
         var newProducts = await getAllRemoteProducts();
 
-        // Match new products with old
-        newProducts.forEach(newProduct => {
-            cachedProducts.forEach(oldProduct => {
-                if (newProduct.pid == oldProduct.pid) {
-                    foundItem(oldProduct, newProduct);
-                }
-            });
-        });
-
         try {
-            fs.writeFileSync("./pageData/dat.json", JSON.stringify(await newProducts, null, 4));
+            // Match new products with old
+            newProducts.forEach(newProduct => {
+                cachedProducts.forEach(oldProduct => {
+                    if (newProduct.pid == oldProduct.pid) {
+                        foundItem(oldProduct, newProduct);
+                    }
+                });
+            });
+        } catch(error) {
+            print("cachedProducts:", cachedProducts)
+            print(error)
+        }
+        
+        try {
+            fs.writeFileSync("./dat.json", JSON.stringify(await newProducts, null, 4));
         } catch (error) {
             log.error(error);
         }
