@@ -1,13 +1,13 @@
 let log;
 const path = require('path');
 
+var notifs = [];
 module.exports = {
     setup: async (logger) => {
         log = logger;
         
         // Generate an array of notification services
         log.log("Loading notification services.");
-        var notifs = [];
 
         var count = 0;
         require('fs').readdirSync(path.join(__dirname, 'notifs')).forEach(function (file) {
