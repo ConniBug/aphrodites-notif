@@ -32,6 +32,6 @@ module.exports.smallRun = async (title, body) => {
         .setDescription(body)
         .setFooter("Conni's Aphrodites Notifier", APHRODITES_STORE_FAVICON_URL)
         .setTimestamp();
-    log.debug("Sending discord webhook.")
+    log.debug("Sending discord webhook.", title, ' - ', body)
     hook.send(embed);
 };
