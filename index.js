@@ -1,4 +1,5 @@
 const log = require('@connibug/js-logging');
+log.setupFileLogging("./");
 
 var packageInfo = require("./package.json");
 var serverVersion = packageInfo.version;
