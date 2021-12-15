@@ -1,3 +1,5 @@
+const log = require('@connibug/js-logging');
+
 const { Webhook, MessageBuilder  } = require('discord-webhook-node');
 const hook = new Webhook(require("../config.json").DiscordWebhook);
 
@@ -30,6 +32,6 @@ module.exports.smallRun = async (title, body) => {
         .setDescription(body)
         .setFooter("Conni's Aphrodites Notifier", APHRODITES_STORE_FAVICON_URL)
         .setTimestamp();
-    console.log("Sending discord webhook.")
+    log.debug("Sending discord webhook.")
     hook.send(embed);
 };
