@@ -5,7 +5,7 @@
 ## Dont want to set it up..?
 
 Join my discord and look in #aphrodites-store
-https://discord.gg/Hd3VX6Njv5
+https://discord.gg/VJNnrnMJaB
 
 ## Setup
 Fill in the config.json with your discord webhook url
