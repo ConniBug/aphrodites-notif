@@ -32,8 +32,7 @@ async function getProductsFromPage(pageNum)
 
     var page = await fetch('https://www.aphrodites.shop/admin/php/ajax.php', { method: 'POST', body: params });
     page = await page.json();
-    page = page.products;
-    return page;
+    return page.products;
 }
 
 function doesExist(array, pidToCheckFor) {
@@ -123,4 +122,4 @@ function sayHi() {
     notificationService.sendMsg("Server Started!", "Version: " + serverVersion + "\n" + `Hostname: ${os.hostname()} \n Last Update Reason: ${mostRecentUpdateReson}`);
 }
 
-setTimeout(sayHi, 2000);
+setTimeout(sayHi, 5000);
